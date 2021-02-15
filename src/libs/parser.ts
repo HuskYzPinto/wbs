@@ -1,5 +1,5 @@
 export type Tent = 'H' | 'C' | 'S' | 'M' | 'F';
-export type ReportState = 'broken' | 'beamed' | 'fighting' | 'looting' | 'dead' | 'empty';
+export type ReportState = 'broken' | 'fighting' | 'looting' | 'dead' | 'empty';
 export type Location = 'DWF' | 'ELM' | 'RDI';
 
 export interface WarbandInfo {
@@ -33,13 +33,35 @@ export function parseChatLine(message: string): Partial<WarbandInfo>|null {
         out.pker = true;
     }
 
-    let tentsMatch = message.match(/\s(h|c|s|m|f)(h|c|s|m|f)(h|c|s|m|f)($|\s)/i);
+    let tentsMatch = message.match(/\s([hcsmf]{3})($|\s)/i);
     if (tentsMatch) {
-        let tentOne = tentsMatch[1].toUpperCase() as Tent;
-        let tentTwo = tentsMatch[2].toUpperCase() as Tent;
-        let tentThree = tentsMatch[3].toUpperCase() as Tent;
+        let tents = tentsMatch[1].toUpperCase();
+
+        let tentOne = tents[0] as Tent;
+        let tentTwo = tents[1] as Tent;
+        let tentThree = tents[2] as Tent;
         out.tents = [tentOne, tentTwo, tentThree];
     }
 
+    let stateMatch = message.match(/\s(broken|beamed|fighting|looting|dead|empty|loot|lootable|cleared|clear|broke|boss)(\s|$)/i);
+    if (stateMatch){
+        let state = null
+        if (['beamed', 'fighting', 'boss'].includes(stateMatch[1])){
+            state = 'fighting';
+        } else if (['broken', 'broke'].includes(stateMatch[1])){
+            state = 'broken';
+        } else if (['looting', 'loot', 'lootable', 'clear', 'cleared'].includes(stateMatch[1])){
+            state = 'looting';
+        } else {
+            state = stateMatch[1];
+        }
+
+        if (!out.pker){
+            out.state = state as ReportState;
+        }
+
+    }
+
     return out;
+
 }
