@@ -15,7 +15,7 @@ test.each([
     ['60 rdi empty', {world: 60, location: 'RDI', state: 'empty'}],
     ['60 dwf fighting', {world: 60, location: 'DWF', state: 'fighting'}],
     ['60 boss', {world: 60, state: 'fighting'}],
-    ['60 looting', {world: 60, state: 'looting'}],
+    ['60 bleurg looting', {world: 60, state: 'looting'}],
     ['60 lootable', {world: 60, state: 'looting'}],
     ['60 cleared', {world: 60, state: 'looting'}],
     ['60 clear', {world: 60, state: 'looting'}],

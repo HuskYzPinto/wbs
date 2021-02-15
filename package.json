@@ -47,6 +47,7 @@
   "devDependencies": {
     "@types/lodash": "^4.14.168",
     "@types/mockdate": "^2.0.0",
-    "mockdate": "^3.0.2"
+    "mockdate": "^3.0.2",
+    "pegjs": "^0.10.0"
   }
 }
