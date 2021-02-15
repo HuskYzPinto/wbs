@@ -62,6 +62,25 @@ export function parseChatLine(message: string): Partial<WarbandInfo>|null {
 
     }
 
+    let timeMatch = message.match(/\s([0-9]+\s(min|mins|m))/i);
+    if (timeMatch){
+        let time = parseInt(timeMatch[1])*60;
+        out.timer = time
+    } else{
+        timeMatch = message.match(/\s([0-9]+(min|mins|m))/i);
+        if (timeMatch){
+            let time = parseInt(timeMatch[1])*60;
+            out.timer = time;
+        } else{
+            timeMatch = message.match(/\s([0-9]+:[0-9]+)/i);
+            if (timeMatch){
+                let time = timeMatch[1].split(':');
+                out.timer = parseInt(time[0])*60+parseInt(time[1]);
+            }
+        }
+
+    }
+
     return out;
 
 }
