@@ -1,11 +1,11 @@
-export type Camps = 'H' | 'C' | 'S' | 'M' | 'F';
+export type Tents = 'H' | 'C' | 'S' | 'M' | 'F';
 export type ReportState = 'broken' | 'beamed' | 'fighting' | 'looting' | 'dead' | 'empty';
 export type Location = 'DWF' | 'ELM' | 'RDI';
 
 export interface WarbandInfo {
     world: number,
     location: Location,
-    camps: [Camps, Camps, Camps],
+    tents: [Tents, Tents, Tents],
     pker: boolean,
     timer: number, // time in seconds
     state: ReportState,
@@ -31,6 +31,14 @@ export function parseChatLine(message: string): Partial<WarbandInfo>|null {
 
     if (message.match(/(^|\s)(pker|clan)(\s|$)/i)) {
         out.pker = true;
+    }
+
+    let tentsMatch = message.match(/\s(h|c|s|m|f)(h|c|s|m|f)(h|c|s|m|f)($|\s)/i);
+    if (tentsMatch) {
+        let tentOne = tentsMatch[1].toUpperCase() as Tents;
+        let tentTwo = tentsMatch[2].toUpperCase() as Tents;
+        let tentThree = tentsMatch[3].toUpperCase() as Tents;
+        out.tents = [tentOne, tentTwo, tentThree];
     }
 
     return out;
