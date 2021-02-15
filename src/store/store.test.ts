@@ -97,7 +97,7 @@ describe('logCamp', () => {
         });
     });
 
-    test('update info', () => {
+    test('update info fighting', () => {
         let store = createStore();
         store.dispatch(logCamp({
             world: 1,
@@ -116,6 +116,80 @@ describe('logCamp', () => {
                     endTime: now.add(15, 'minute'),
                     state: 'fighting',
                     tents: ['H', 'C', 'S'],
+                },
+            ],
+        });
+    });
+
+    test('update info looting', () => {
+        let store = createStore();
+        store.dispatch(logCamp({
+            world: 1,
+            location: 'DWF',
+            state: 'fighting'
+        }));
+        store.dispatch(logCamp({
+            world: 1,
+            tents: ['H', 'C', 'S'],
+            state: 'looting'
+        }));
+        expect(store.getState()).toEqual({
+            camps: [
+                {
+                    world: 1,
+                    location: 'DWF',
+                    pker: false,
+                    endTime: expect.anything(),
+                    state: 'looting',
+                    tents: ['H', 'C', 'S'],
+                },
+            ],
+        });
+    });
+
+    test('update info timer', () => {
+        let store = createStore();
+        store.dispatch(logCamp({
+            world: 1,
+            state: 'looting'
+        }));
+        store.dispatch(logCamp({
+            world: 1,
+            timer: 4 * 60,
+        }));
+        expect(store.getState()).toEqual({
+            camps: [
+                {
+                    world: 1,
+                    location: null,
+                    pker: false,
+                    endTime: now.add(4, 'minute'),
+                    state: 'looting',
+                    tents: null,
+                },
+            ],
+        });
+    });
+
+    test('update info pker', () => {
+        let store = createStore();
+        store.dispatch(logCamp({
+            world: 1,
+            state: 'looting'
+        }));
+        store.dispatch(logCamp({
+            world: 1,
+            pker: true,
+        }));
+        expect(store.getState()).toEqual({
+            camps: [
+                {
+                    world: 1,
+                    location: null,
+                    pker: true,
+                    endTime: expect.anything(),
+                    state: 'looting',
+                    tents: null,
                 },
             ],
         });
