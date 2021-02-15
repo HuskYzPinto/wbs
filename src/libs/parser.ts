@@ -29,7 +29,7 @@ export function parseChatLine(message: string): Partial<WarbandInfo>|null {
         out.location = locationMatch[1].toUpperCase() as Location;
     }
 
-    if (message.match(/(^|\s)(pker|clan)(\s|$)/i)) {
+    if (message.match(/(^|\s)(pker|clan|clanned)(\s|$)/i)) {
         out.pker = true;
     }
 
@@ -62,17 +62,17 @@ export function parseChatLine(message: string): Partial<WarbandInfo>|null {
 
     }
 
-    let timeMatch = message.match(/\s([0-9]+\s(min|mins|m))/i);
+    let timeMatch = message.match(/\s([0-9]+\s(min|mins|m))(\s|$)/i);
     if (timeMatch){
         let time = parseInt(timeMatch[1])*60;
         out.timer = time
     } else{
-        timeMatch = message.match(/\s([0-9]+(min|mins|m))/i);
+        timeMatch = message.match(/\s([0-9]+(min|mins|m))(\s|$)/i);
         if (timeMatch){
             let time = parseInt(timeMatch[1])*60;
             out.timer = time;
         } else{
-            timeMatch = message.match(/\s([0-9]+:[0-9]+)/i);
+            timeMatch = message.match(/\s([0-9]+:[0-9]+)(\s|$)/i);
             if (timeMatch){
                 let time = timeMatch[1].split(':');
                 out.timer = parseInt(time[0])*60+parseInt(time[1]);
@@ -80,6 +80,10 @@ export function parseChatLine(message: string): Partial<WarbandInfo>|null {
         }
 
     }
+    let invalidCheck = message.match(/\s(invalid message)(\s|$)/i);
+        if (invalidCheck){
+            return null
+        }
 
     return out;
 
