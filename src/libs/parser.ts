@@ -80,10 +80,9 @@ export function parseChatLine(message: string): Partial<WarbandInfo>|null {
         }
 
     }
-    let invalidCheck = message.match(/\s(invalid message)(\s|$)/i);
-        if (invalidCheck){
-            return null
-        }
+    if ((out.location == null && out.tents == null && out.pker == null && out.timer == null && out.state == null)||(out.world == null)){
+        return null
+    }
 
     return out;
 
