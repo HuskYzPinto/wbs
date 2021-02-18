@@ -15,6 +15,7 @@ export interface WarbandInfo {
 
 export function parseChatLine(message: string): Partial<WarbandInfo>|null {
     try {
+        
         return parse(message);
     } catch(e) {
         return null;

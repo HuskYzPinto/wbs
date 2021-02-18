@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts && pegjs src/libs/grammar.pegjs",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
