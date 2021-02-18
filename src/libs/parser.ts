@@ -15,8 +15,13 @@ export interface WarbandInfo {
 
 export function parseChatLine(message: string): Partial<WarbandInfo>|null {
     try {
-        
-        return parse(message);
+        let result = parse(message);
+        if (result.location == null && result.tents == null && result.pker == null && result.timer == null && result.state == null){
+            result = null;
+        } else if (result.pker == true && result.state == 'fighting'){
+            delete result.state;
+        }
+        return result;
     } catch(e) {
         return null;
     }
