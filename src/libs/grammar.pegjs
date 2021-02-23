@@ -11,10 +11,10 @@ Calls = c:Call next:(' ' Calls)? {
 
 Call = (
 	l:Location { return {location: l} }
-	/ t:Tents { return {tents: t} }
 	/ s:State { return {state: s} }
 	/ t:Time { return {timer: t} }
 	/ Pker { return {pker: true} }
+	/ t:Tents SpaceOrEnd { return {tents: t} }
 	/ & World
 	/ Garbage { return {} }
 )
@@ -22,10 +22,18 @@ Call = (
 
 Location = ('DWF'i / 'ELM'i / 'RDI'i) { return text().toUpperCase() }
 
-Tents = Tent Tent Tent
+
+Tents = a:FullTent __ b:FullTent __ c:FullTent { return [a, b, c] }
+	/ a:FullTent __ b:FullTent { return [a, b] }
+	/ a:FullTent { return [a] }
+	/ a:Tent __ b:Tent __ c:Tent { return [a, b, c] }
+	/ a:Tent __ b:Tent { return [a, b] }
+	/ a:Tent { return [a] }
 
 State = 'broken'i
 	/ 'broke'i { return 'broken' }
+	/ 'ruined'i { return 'broken' }
+	/ 'ruin'i { return 'broken' }
 	/ 'beamed'i { return 'fighting' }
 	/ 'fighting'i
 	/ 'boss'i { return 'fighting' }
@@ -38,6 +46,18 @@ State = 'broken'i
 	/ 'empty'i
 
 Tent = ('H'i / 'C'i / 'M'i / 'S'i / 'F'i) { return text().toUpperCase() }
+FullTent = (
+	'herblore'i
+	/ 'herb'i
+	/ 'farming'i
+	/ 'farm'i
+	/ 'construction'i
+	/ 'cons'i
+	/ 'mining'i
+	/ 'mine'i
+	/ 'smithing'i
+	/ 'smith'i
+) { return text()[0].toUpperCase() }
 
 Pker = 'pker'i / 'clanned'i / 'clan'i
 
@@ -49,4 +69,8 @@ Garbage "garbage" = [^ ]+
 
 Integer "integer" = [0-9]+ { return parseInt(text(), 10); }
 
+SpaceOrEnd = & ' '
+	/ ! .
+
+__ "tent-sep" = [ /]*
 _ "whitespace" = ' ' *
