@@ -14,6 +14,8 @@
     "dayjs": "^1.10.4",
     "immer": "^8.0.1",
     "lodash": "^4.17.20",
+    "mime": "^1.6.0",
+    "mime-types": "^2.1.29",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.2",

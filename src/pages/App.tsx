@@ -1,14 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import wbForm from '../components/wbform';
+import WbForm from '../components/WbForm';
 
 function App() {
   return (
-    <div className="App">
-      <p>
-        test
-      </p>
+    <div>
+      <WbForm message="test" />
     </div>
   );
 }
