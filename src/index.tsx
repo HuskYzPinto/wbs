@@ -3,7 +3,8 @@ import { Provider, useDispatch } from 'react-redux';
 import createStore from './store/store';
 import ReactDOM from 'react-dom';
 
-import './index.css';
+import './styles/nis.css';
+import './styles/darkscape/skinstyle.css'
 
 import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
