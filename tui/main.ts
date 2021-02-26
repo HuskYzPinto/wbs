@@ -17,11 +17,12 @@ const screen = blessed.screen({
 screen.key(['escape', 'C-c'], () => {
     return process.exit(0);
 });
+screen.key(['tab'], () => {
+    screen.focusNext();
+});
 
 const table = bcontrib.table({
     keys: true,
-    interactive: true as any,
-    width: '100%',
     height: '100%-3',
     columnSpacing: 2,
     columnWidth: [
@@ -30,6 +31,7 @@ const table = bcontrib.table({
         6, 6, 6 // pker timer done
     ],
 });
+table.focus();
 screen.append(table);
 const tableHeader = ['W', 'Loc', 'State', 'Herb', 'Cons', 'Mine', 'Smith', 'Farm', 'Pker', 'Timer', 'Done'];
 table.setData({
