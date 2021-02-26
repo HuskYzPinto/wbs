@@ -14,8 +14,9 @@ const WbForm: React.FC<Props> = () => {
 				type="text"
 				value={message}
 				onChange={(e) => setMessage(e.target.value)}
-			/>
-			<button onClick={() => dispatch(logCampLine(message))}>Submit</button>
+			/><br/>
+			<button onClick={() => dispatch(logCampLine(message))}>Submit</button><br/>
+			<button onClick={() => dispatch(reset())}> Reset</button>
 		</div>
 	);
 };
