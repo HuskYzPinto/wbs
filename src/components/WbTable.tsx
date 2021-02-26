@@ -1,11 +1,25 @@
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
+
+
 interface Props {}
 
-const WbTable: React.FC<Props> = () => {
-	const state = useSelector((state) => state.camps);
 
+
+
+const WbTable: React.FC<Props> = () => {
+	
+    const state = useSelector((state) => state.camps);
+    const output = state.map((camp) => 
+        <tr>
+            <td>{camp.world}</td>
+            <td>{camp.location}</td>
+            <td>{camp.tents}</td>
+            <td>{camp.state}</td>
+            <td>{camp.pker}</td>
+        </tr>
+    );
 	return (
 		<div>
 			<table>
@@ -18,7 +32,7 @@ const WbTable: React.FC<Props> = () => {
 					<th>Timer</th>
 				</thead>
 				<tr>
-					<td>hello</td>
+                    {output}
 				</tr>
 			</table>
 		</div>
