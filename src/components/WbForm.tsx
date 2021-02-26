@@ -1,17 +1,25 @@
-import { stringify } from 'node:querystring';
-import React from 'react';
-import { LabeledStatement } from 'typescript';
+import React, { useState } from 'react';
+import { useDispatch, useStore } from 'react-redux';
+import { logCampLine, reset } from '../store/actions';
 
+interface Props {}
 
-type WbFormProps = {
-    message: string,
+const WbForm: React.FC<Props> = () => {
+    const dispatch = useDispatch();
+    const [message, setMessage] = useState<string>('');
+    return (
+        <div>
+            <input
+                name='message'
+                type='text'
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+            />
+            <button onClick={() => dispatch(logCampLine(message))}>
+                Submit
+            </button>
+        </div>
+    );
 };
-
-const WbForm: React.FC<WbFormProps> = ({children, message}) => (
-    <div>
-        <p> Test, this is the message: {message} </p>
-        {children}
-    </div>
-);
 
 export default WbForm;
