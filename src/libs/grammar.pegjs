@@ -1,4 +1,4 @@
-start = w:World ' ' c:Calls { return {world: w, ...c} } 
+start = w:World ' '? c:Calls { return {world: w, ...c} } 
 	/ c:Calls w:World { return {world: w, ...c} }
 	
 World = 'w' i:Integer { return i }
@@ -44,6 +44,7 @@ State = 'broken'i
 	/ 'clear'i { return 'looting' }
 	/ 'dead'i
 	/ 'empty'i
+	/ 'emptied'i { return 'empty' }
 
 Tent = ('H'i / 'C'i / 'M'i / 'S'i / 'F'i) { return text().toUpperCase() }
 FullTent = (
