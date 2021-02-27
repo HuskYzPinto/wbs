@@ -95,8 +95,10 @@ export default function (initialState?: Store) {
 	let out = createStore(
 		_reducer,
 		initialState,
-		(window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
-			(window as any).__REDUX_DEVTOOLS_EXTENSION__()
+		typeof window !== 'undefined'
+			? (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
+					(window as any).__REDUX_DEVTOOLS_EXTENSION__()
+			: undefined
 	);
 	return out;
 }
