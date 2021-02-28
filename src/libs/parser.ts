@@ -11,6 +11,7 @@ export interface WarbandInfo {
 	pker: boolean;
 	timer: number; // time in seconds
 	state: ReportState;
+	done: boolean;
 }
 
 export function parseChatLine(message: string): Partial<WarbandInfo> | null {

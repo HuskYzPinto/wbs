@@ -10,6 +10,7 @@ export interface Camp {
 	pker: boolean;
 	endTime: dayjs.Dayjs;
 	state: CampState;
+	done: boolean;
 }
 
 export interface Store {

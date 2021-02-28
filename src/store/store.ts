@@ -1,8 +1,8 @@
 import { createStore } from 'redux';
 import { findIndex } from 'lodash';
-import produce from 'immer';
+import produce, { current } from 'immer';
 import dayjs from 'dayjs';
-import { LOG_CAMP, RESET } from './actions';
+import { LOG_CAMP, RESET, DONE } from './actions';
 import { Action, Camp, Store } from './type';
 import { WarbandInfo } from '../libs/parser';
 
@@ -30,6 +30,7 @@ function _reducer(state: Store | undefined, action: Action): Store {
 						pker: info.pker || false,
 						state: 'new',
 						tents: info.tents || null,
+						done: false,
 					};
 
 					if (info.state === 'broken' || info.state === 'fighting') {
@@ -86,6 +87,19 @@ function _reducer(state: Store | undefined, action: Action): Store {
 					camp.endTime = camp.endTime.add(5, 'minute');
 				}
 			});
+		
+		case DONE:
+			let currentWorld: Partial<WarbandInfo> = action.info;
+			console.log(currentWorld);
+			return produce(state, (draft) => {
+				let campIndex = findIndex(
+					draft.camps,
+					(item) => item.world === currentWorld.world
+				);
+				let camp = draft.camps[campIndex];
+				camp.done = true;
+			});
+
 		default:
 			return state;
 	}

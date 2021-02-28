@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
+import {done} from '../store/actions';
+import { WarbandInfo } from '../libs/parser';
 
 
 interface Props {}
@@ -11,6 +12,8 @@ interface Props {}
 const WbTable: React.FC<Props> = () => {
 	
     const state = useSelector((state) => state.camps);
+	console.log(state);
+	const dispatch = useDispatch();
     const output = state.map((camp) => 
         <tr>
             <td>{camp.world}</td>
@@ -18,6 +21,12 @@ const WbTable: React.FC<Props> = () => {
             <td>{camp.tents}</td>
             <td>{camp.state}</td>
             <td>{camp.pker}</td>
+			<td>
+				<button onClick={() => {
+					const info: Partial<WarbandInfo> = {world:camp.world};
+					dispatch(done(info))}}>
+					Done </button>
+			</td>
         </tr>
     );
 	return (
@@ -30,6 +39,7 @@ const WbTable: React.FC<Props> = () => {
 					<th>Status</th>
 					<th>Pker</th>
 					<th>Timer</th>
+					<th>Done</th>
 				</thead>
 				<tr>
                     {output}
