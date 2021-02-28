@@ -41,9 +41,9 @@ const WbTable: React.FC<Props> = () => {
 					<th>Timer</th>
 					<th>Done</th>
 				</thead>
-				<tr>
+				<tbody>
                     {output}
-				</tr>
+				</tbody>
 			</table>
 		</div>
 	);
