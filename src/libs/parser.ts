@@ -6,12 +6,12 @@ export type Location = 'DWF' | 'ELM' | 'RDI';
 
 export interface WarbandInfo {
 	world: number;
-	location: Location;
-	tents: [Tent, Tent, Tent];
+	location: Location | null;
+	tents: [Tent, Tent, Tent] | null;
 	pker: boolean;
-	timer: number; // time in seconds
-	state: ReportState;
-	done: boolean;
+	timer: number | null; // time in seconds
+	state: ReportState | null;
+	done: boolean | null;
 }
 
 export function parseChatLine(message: string): Partial<WarbandInfo> | null {
