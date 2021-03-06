@@ -87,7 +87,7 @@ function _reducer(state: Store | undefined, action: Action): Store {
 					camp.endTime = camp.endTime.add(5, 'minute');
 				}
 			});
-		
+
 		case DONE:
 			let currentWorld: Partial<WarbandInfo> = action.info;
 			console.log(currentWorld);

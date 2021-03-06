@@ -22,9 +22,7 @@ export function logCampLine(line: string): Action {
 }
 
 export function done(info: Partial<WarbandInfo>): Action {
-	return {type: DONE,
-		info: info,
-	};
+	return { type: DONE, info: info };
 }
 
 export function reset(): Action {
