@@ -1,4 +1,4 @@
-import { parse } from './grammar';
+const { parse } = require('./grammar');
 
 export type Tent = 'H' | 'C' | 'S' | 'M' | 'F';
 export type ReportState = 'broken' | 'fighting' | 'looting' | 'dead' | 'empty';
