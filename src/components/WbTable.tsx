@@ -1,12 +1,16 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { done } from '../store/actions';
 import { WarbandInfo } from '../libs/parser';
 import { Camp } from '../store/type';
+import {simple} from '../styles/main';
 
-interface Props {}
 
-const WbTable: React.FC<Props> = () => {
+interface Props{
+
+}
+
+const WbTable: React.FC<Props> = (props: any) => {
 	const state = useSelector((state) => state.camps);
 	const dispatch = useDispatch();
 
@@ -77,8 +81,8 @@ const WbTable: React.FC<Props> = () => {
 		</tr>
 	));
 	return (
-		<div>
-			<table>
+		<div> 
+			<table >
 				<caption> Warband Application</caption>
 				<thead>
 					<tr>
