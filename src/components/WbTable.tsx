@@ -1,41 +1,64 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { done } from '../store/actions';
-import { WarbandInfo } from '../libs/parser';
+import { WarbandInfo, Tent } from '../libs/parser';
 import { Camp } from '../store/type';
-import {simple} from '../styles/main';
 
-
-interface Props{
-
+type SortKeyer = (camp: Camp) => any;
+type SortKey = keyof Camp | Tent;
+enum SortDirection {
+	Ascending = 0,
+	Descending = 1,
 }
+interface Props {}
+
+const sortKeyer: { readonly [key in SortKey]?: SortKeyer } = {
+	world: (c) => c.world,
+	location: (c) => c.location,
+	done: (c) => (c.done ? 0 : 1),
+	pker: (c) => (c.pker ? 0 : 1),
+	state: (c) => c.state,
+	C: (c) => (c.tents?.includes('C') ? 0 : 1),
+	S: (c) => (c.tents?.includes('S') ? 0 : 1),
+	H: (c) => (c.tents?.includes('H') ? 0 : 1),
+	M: (c) => (c.tents?.includes('M') ? 0 : 1),
+	F: (c) => (c.tents?.includes('F') ? 0 : 1),
+};
 
 const WbTable: React.FC<Props> = (props: any) => {
 	const state = useSelector((state) => state.camps);
 	const dispatch = useDispatch();
 
-	const camps: Array<Camp> = state;
-	const [sortConfig, setSortConfig] = React.useState<any>(null);
+	const camps: Camp[] = state;
+	const [sortConfig, setSortConfig] = React.useState<{
+		key: SortKey;
+		direction: SortDirection;
+	} | null>(null);
 
-	const requestSort = (key: string) => {
-		let direction = 'ascending';
+	const requestSort = (key: SortKey) => {
+		let direction = SortDirection.Ascending;
 		if (sortConfig) {
-			if (sortConfig.key === key && sortConfig.direction === 'ascending') {
-				direction = 'descending';
+			if (
+				sortConfig.key === key &&
+				sortConfig.direction === SortDirection.Ascending
+			) {
+				direction = SortDirection.Descending;
 			}
 		}
 		setSortConfig({ key, direction });
 	};
 
-	let sortedCamps: any = [...camps];
+	let sortedCamps: Camp[] = [...camps];
 
 	if (sortConfig !== null) {
-		sortedCamps.sort((a: any, b: any) => {
-			if (a[sortConfig.key!] < b[sortConfig.key!]) {
-				return sortConfig.direction === 'ascending' ? -1 : 1;
-			}
-			if (a[sortConfig.key!] > b[sortConfig.key!]) {
-				return sortConfig.direction === 'ascending' ? 1 : -1;
+		sortedCamps.sort((a: Camp, b: Camp) => {
+			let aKey = sortKeyer[sortConfig.key]!(a);
+			let bKey = sortKeyer[sortConfig.key]!(b);
+
+			if (aKey < bKey) {
+				return sortConfig.direction === SortDirection.Ascending ? -1 : 1;
+			} else if (aKey > bKey) {
+				return sortConfig.direction === SortDirection.Ascending ? 1 : -1;
 			}
 			return 0;
 		});
@@ -81,8 +104,8 @@ const WbTable: React.FC<Props> = (props: any) => {
 		</tr>
 	));
 	return (
-		<div> 
-			<table >
+		<div>
+			<table>
 				<caption> Warband Application</caption>
 				<thead>
 					<tr>
@@ -97,32 +120,32 @@ const WbTable: React.FC<Props> = (props: any) => {
 							</button>
 						</th>
 						<th>
-							<button type="button" onClick={() => requestSort('construction')}>
+							<button type="button" onClick={() => requestSort('C')}>
 								Construction
 							</button>
 						</th>
 						<th>
-							<button type="button" onClick={() => requestSort('smithing')}>
+							<button type="button" onClick={() => requestSort('S')}>
 								Smithing
 							</button>
 						</th>
 						<th>
-							<button type="button" onClick={() => requestSort('mining')}>
+							<button type="button" onClick={() => requestSort('M')}>
 								Mining
 							</button>
 						</th>
 						<th>
-							<button type="button" onClick={() => requestSort('herblore')}>
+							<button type="button" onClick={() => requestSort('H')}>
 								Herblore
 							</button>
 						</th>
 						<th>
-							<button type="button" onClick={() => requestSort('farming')}>
+							<button type="button" onClick={() => requestSort('F')}>
 								Farming
 							</button>
 						</th>
 						<th>
-							<button type="button" onClick={() => requestSort('status')}>
+							<button type="button" onClick={() => requestSort('state')}>
 								Status
 							</button>
 						</th>
