@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Provider, useDispatch } from 'react-redux';
-import createStore from './store/store';
+import React  from 'react';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
 
+import createStore from './store/store';
 import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
 import readChatbox from "./alt1";

@@ -2,9 +2,10 @@
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {done} from '../store/actions';
-import {Tent, WarbandInfo} from '../libs/parser';
+import {Tent} from '../libs/parser';
 import {Camp} from '../store/type';
 import {css, jsx} from '@emotion/react'
+import Timer from './Timer';
 
 const tableStyle = css`
 	width: 100%;
@@ -40,6 +41,7 @@ const sortKeyer: { readonly [key in SortKey]?: SortKeyer } = {
     done: (c) => (c.done ? 0 : 1),
     pker: (c) => (c.pker ? 0 : 1),
     state: (c) => c.state,
+    endTime: (c) => c.endTime.unix(),
     C: (c) => (c.tents?.includes('C') ? 0 : 1),
     S: (c) => (c.tents?.includes('S') ? 0 : 1),
     H: (c) => (c.tents?.includes('H') ? 0 : 1),
@@ -102,7 +104,7 @@ const WbTable: React.FC<Props> = (props: any) => {
         }
     };
 
-    const output = sortedCamps.map((camp: any) => (
+    const output = sortedCamps.map((camp) => (
         <tr key={camp.world}>
             <td>{camp.world}</td>
             <td>{camp.location}</td>
@@ -111,9 +113,10 @@ const WbTable: React.FC<Props> = (props: any) => {
             <td css={tentStyle}>{boolText(checkTent(camp.tents, 'M'))}</td>
             <td css={tentStyle}>{boolText(checkTent(camp.tents, 'H'))}</td>
             <td css={tentStyle}>{boolText(checkTent(camp.tents, 'F'))}</td>
-            <td css={tentStyle}>{camp.state}</td>
             <td css={tentStyle}>{boolText(camp.pker)}</td>
             <td css={tentStyle}>{boolText(camp.done)}</td>
+            <td css={tentStyle}>{camp.state}</td>
+			<td><Timer time={camp.endTime} /></td>
             <td css={doneColStyle}>
                 <button
 					className="nisbutton2"
@@ -164,11 +167,6 @@ const WbTable: React.FC<Props> = (props: any) => {
                         F
                     </button>
                 </th>
-                <th>
-                    <button className="nisbutton2" type="button" onClick={() => requestSort('state')}>
-                        Status
-                    </button>
-                </th>
                 <th css={tentStyle}>
                     <button className="nisbutton2" type="button" onClick={() => requestSort('pker')}>
                         Pker
@@ -177,6 +175,16 @@ const WbTable: React.FC<Props> = (props: any) => {
                 <th css={tentStyle}>
                     <button className="nisbutton2" type="button" onClick={() => requestSort('done')}>
                         Done
+                    </button>
+                </th>
+				<th>
+					<button className="nisbutton2" type="button" onClick={() => requestSort('state')}>
+						Status
+					</button>
+				</th>
+				<th>
+                    <button className="nisbutton2" type="button" onClick={() => requestSort('endTime')}>
+                        Time
                     </button>
                 </th>
 				<th css={doneColStyle}></th>
