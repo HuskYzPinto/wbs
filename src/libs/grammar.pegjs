@@ -1,7 +1,7 @@
 start = w:World ' '? c:Calls { return {world: w, ...c} } 
 	/ c:Calls w:World { return {world: w, ...c} }
 	
-World = 'w' i:Integer { return i }
+World = 'w'i i:Integer { return i }
 	/ i:Integer
 
 Calls = c:Call next:(' ' Calls)? {

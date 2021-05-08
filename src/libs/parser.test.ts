@@ -41,6 +41,7 @@ test.each([
 	['1 invalid message', null],
 	['w60 invalid message', null],
 	['w60 fighting pker', { world: 60, pker: true }],
+	['W69 smh pker', { world: 69, tents: ['S', 'M', 'H'], pker: true}],
 ] as Array<[string, Partial<WarbandInfo>]>)('%s', (chatLine, expected) => {
 	expect(parseChatLine(chatLine)).toEqual(expected);
 });
