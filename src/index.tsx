@@ -3,9 +3,6 @@ import { Provider, useDispatch } from 'react-redux';
 import createStore from './store/store';
 import ReactDOM from 'react-dom';
 
-import './styles/nis.css';
-import './styles/darkscape/skinstyle.css';
-
 import App from './pages/App';
 import reportWebVitals from './reportWebVitals';
 import readChatbox from "./alt1";

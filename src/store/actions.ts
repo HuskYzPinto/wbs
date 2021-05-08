@@ -21,8 +21,8 @@ export function logCampLine(line: string): Action {
 	return logCamp(parsed);
 }
 
-export function done(info: Partial<WarbandInfo>): Action {
-	return { type: DONE, info: info };
+export function done(world: number, value = true): Action {
+	return { type: DONE, world, done: value };
 }
 
 export function reset(): Action {

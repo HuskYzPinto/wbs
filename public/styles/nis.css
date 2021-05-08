@@ -13,7 +13,7 @@
 
 
 .nismainborder{position:absolute; top:0px; left:0px; right:0px; bottom:0px;}
-.nisborder{border-width:4px; border-style:solid; border-image:url('darkscape/borderSprite.png') 4 repeat; -moz-border-image:url('darkscape/borderSprite.png') 4 repeat; background:url('darkscape/background.png'); overflow:hidden;}
+.nisborder{border-width:4px; border-style:solid; border-image:url('styles/darkscape/borderSprite.png') 4 repeat; -moz-border-image:url('styles/darkscape/borderSprite.png') 4 repeat; background:url('styles/darkscape/background.png'); overflow:hidden;}
 .nisexitbutton{background:url(darkscape/exitSprite.png); position:absolute; top:-4px; right:-4px; width:12px; height:12px; cursor:pointer; z-index:1000;}
 .nisexitbutton:hover{background-position:0px -12px;}
 .nisseperator{width:100%; height:0px; border-top:1px solid #000; border-bottom:1px solid #41555F; position:absolute; left:0px;}
@@ -38,7 +38,7 @@
 	.nistable tr:nth-child(odd){background:rgba(255,255,255,0.15);}
 	.nistable th{color:#DDD;}
 
-.contenttab{float:right; width:90px; height:20px; line-height:20px; text-align:center; color:#BBB; cursor:pointer; background:url('darkscape/tabback.png') 0 0 / 100% 100%; position:relative; margin-left:-14px; z-index:11; margin-top:-1px;}
+.contenttab{float:right; width:90px; height:20px; line-height:20px; text-align:center; color:#BBB; cursor:pointer; background:url('styles/darkscape/tabback.png') 0 0 / 100% 100%; position:relative; margin-left:-14px; z-index:11; margin-top:-1px;}
 .contenttab:not(.activetab){z-index:10; -webkit-filter:brightness(50%); filter:brightness(50%); margin-top:1px; height:18px;}
 
 .nisinput,
@@ -48,9 +48,9 @@
 .nisdropdown{height:19px; cursor:pointer; color:#AF8248; outline:none; box-sizing:border-box; padding:0px 0px 0px 4px;}
 .nisdropdown>option{background:#1D190D;}
 
-.nisbutton{height:32px; position:relative; background:url('darkscape/nisbutton.png') 0px -100% / 10px 400% repeat content-box; cursor:pointer; text-align:center; color:#000; font-family:'trajan-pro-3'; text-shadow:1px 1px 2px #ECC622; font-size:18px; margin:5px; padding:0px 12px; line-height:32px; user-select:none; -webkit-user-select:none;}
-.nisbutton::before{width:12px; height:100%; content:""; position:absolute; top:0px; left:0px; background:url('darkscape/nisbutton.png') 0px 0px / 24px 400%;}
-.nisbutton::after{width:12px; height:100%; content:""; position:absolute; top:0px; right:0px; background:url('darkscape/nisbutton.png') -12px 0px / 24px 400%;}
+.nisbutton{height:32px; position:relative; background:url('styles/darkscape/nisbutton.png') 0px -100% / 10px 400% repeat content-box; cursor:pointer; text-align:center; color:#000; font-family:'trajan-pro-3'; text-shadow:1px 1px 2px #ECC622; font-size:18px; margin:5px; padding:0px 12px; line-height:32px; user-select:none; -webkit-user-select:none;}
+.nisbutton::before{width:12px; height:100%; content:""; position:absolute; top:0px; left:0px; background:url('styles/darkscape/nisbutton.png') 0px 0px / 24px 400%;}
+.nisbutton::after{width:12px; height:100%; content:""; position:absolute; top:0px; right:0px; background:url('styles/darkscape/nisbutton.png') -12px 0px / 24px 400%;}
 .nisbutton:hover{background-position:0px -300%;}
 .nisbutton:hover::before{background-position:0px -200%;}
 .nisbutton:hover::after{background-position:-12px -200%;}
@@ -71,9 +71,9 @@
 *[data-nistitle-rt]:hover::before{left:20px; bottom:0px; content:attr(data-nistitle-rl);}
 *[data-nistitle-lt]:hover::before{right:20px; bottom:0px; content:attr(data-nistitle-lt);}
 
-body.nis{background:url('darkscape/background.png') #171E24; overflow:hidden; margin:0px; font-family:sans-serif; font-size:13px; color:#bbb;}
+body.nis{background:url('styles/darkscape/background.png') #171E24; overflow:hidden; margin:0px; font-family:sans-serif; font-size:13px; color:#bbb;}
 
-.nisclosebutton{width:12px; height:12px; background:url('darkscape/exitSprite.png'); cursor:pointer;}
+.nisclosebutton{width:12px; height:12px; background:url('styles/darkscape/exitSprite.png'); cursor:pointer;}
 .nisclosebutton:hover{background-position:0px -12px;}
 
 /*Chromium custom scrollbars, will only work on chromium browsers (such as alt1) */

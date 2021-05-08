@@ -89,15 +89,13 @@ function _reducer(state: Store | undefined, action: Action): Store {
 			});
 
 		case DONE:
-			let currentWorld: Partial<WarbandInfo> = action.info;
-			console.log(currentWorld);
 			return produce(state, (draft) => {
 				let campIndex = findIndex(
 					draft.camps,
-					(item) => item.world === currentWorld.world
+					(item) => item.world === action.world
 				);
 				let camp = draft.camps[campIndex];
-				camp.done = true;
+				camp.done = action.done;
 			});
 
 		default:

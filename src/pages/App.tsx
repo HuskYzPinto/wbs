@@ -1,15 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import WbForm from '../components/WbForm';
 import WbTable from '../components/WbTable';
+import Alt1Style from '../components/Alt1Style';
 
 const App = () => {
 	return (
-		<div>
+		<>
+			<Alt1Style />
 			<WbForm />
 			<WbTable />
-		</div>
+		</>
 	);
 };
 
