@@ -3,11 +3,11 @@
   "description": "Read chat and log warband camp",
   "appUrl": "/",
   "configUrl": "/appconfig.json",
-  "defaultWidth": 300,
-  "defaultHeight": 500,
-  "minWidth": 200,
+  "defaultWidth": 600,
+  "defaultHeight": 400,
+  "minWidth": 600,
   "minHeight": 200,
-  "maxWidth": 1000,
-  "maxHeight": 1000,
+  "maxWidth": 10000,
+  "maxHeight": 10000,
   "permissions": "pixel"
 }
