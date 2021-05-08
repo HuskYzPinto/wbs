@@ -43,5 +43,5 @@ export default function readChatbox(store: ReturnType<typeof createStore>): void
         }
 
         lastTexts = lines.map((item) => item.text);
-    }, 500);
+    }, alt1.captureInterval);
 }
