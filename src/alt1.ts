@@ -12,7 +12,6 @@ export default function readChatbox(store: ReturnType<typeof createStore>): void
     }
 
     let reader = new ChatboxReader();
-    let lastTexts: string[] = [];
     setInterval(() => {
         if (!reader.pos) {
             try {
@@ -29,11 +28,6 @@ export default function readChatbox(store: ReturnType<typeof createStore>): void
         }
 
         outer: for (let line of lines) {
-            for (let item of lastTexts) {
-                if (reader.matchLines(item, line.text)) {
-                    continue outer;
-                }
-            }
             if(!line.fragments.find((frag) => frag.text === 'FC')){
                 return;
             }
@@ -41,7 +35,5 @@ export default function readChatbox(store: ReturnType<typeof createStore>): void
             console.log('Alt1', text);
             store.dispatch(logCampLine(text));
         }
-
-        lastTexts = lines.map((item) => item.text);
     }, alt1.captureInterval);
 }
