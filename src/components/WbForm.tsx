@@ -11,6 +11,7 @@ const WbForm: React.FC<Props> = () => {
 	const handleSubmit: React.FormEventHandler = (event) => {
 		event?.preventDefault()
 		dispatch(logCampLine(message));;
+		setMessage('');
 	};;
 	return (
 		<div>

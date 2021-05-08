@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://warbands.huskatronics.com",
   "dependencies": {
+    "@alt1/chatbox": "^0.0.13",
     "@babel/core": "7.12.3",
     "@emotion/react": "^11.1.5",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.3",
