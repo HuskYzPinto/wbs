@@ -16,6 +16,7 @@ afterAll(() => {
 test('default store state', () => {
 	expect(createStore().getState()).toEqual({
 		camps: [],
+		emptiedWorlds: new Set(),
 	});
 });
 
@@ -28,19 +29,17 @@ describe('logCamp', () => {
 				location: 'DWF',
 			})
 		);
-		expect(store.getState()).toEqual({
-			camps: [
-				{
-					world: 1,
-					location: 'DWF',
-					pker: false,
-					endTime: now.add(10, 'minute'),
-					state: 'new',
-					tents: null,
-					done: false,
-				},
-			],
-		});
+		expect(store.getState().camps).toEqual([
+			{
+				world: 1,
+				location: 'DWF',
+				pker: false,
+				endTime: now.add(10, 'minute'),
+				state: 'new',
+				tents: null,
+				done: false,
+			},
+		]);
 	});
 
 	test('store multiple camp must be sorted', () => {
@@ -57,28 +56,26 @@ describe('logCamp', () => {
 				location: 'DWF',
 			})
 		);
-		expect(store.getState()).toEqual({
-			camps: [
-				{
-					world: 1,
-					location: 'DWF',
-					pker: false,
-					endTime: expect.anything(),
-					state: 'new',
-					tents: null,
-					done: false,
-				},
-				{
-					world: 2,
-					location: 'ELM',
-					pker: false,
-					endTime: expect.anything(),
-					state: 'new',
-					tents: null,
-					done: false,
-				},
-			],
-		});
+		expect(store.getState().camps).toEqual([
+			{
+				world: 1,
+				location: 'DWF',
+				pker: false,
+				endTime: expect.anything(),
+				state: 'new',
+				tents: null,
+				done: false,
+			},
+			{
+				world: 2,
+				location: 'ELM',
+				pker: false,
+				endTime: expect.anything(),
+				state: 'new',
+				tents: null,
+				done: false,
+			},
+		]);
 	});
 
 	test('handle duplicate calls', () => {
@@ -96,19 +93,17 @@ describe('logCamp', () => {
 				location: 'DWF',
 			})
 		);
-		expect(store.getState()).toEqual({
-			camps: [
-				{
-					world: 1,
-					location: 'DWF',
-					pker: false,
-					endTime: now.add(10, 'minute'),
-					state: 'new',
-					tents: null,
-					done: false,
-				},
-			],
-		});
+		expect(store.getState().camps).toEqual([
+			{
+				world: 1,
+				location: 'DWF',
+				pker: false,
+				endTime: now.add(10, 'minute'),
+				state: 'new',
+				tents: null,
+				done: false,
+			},
+		]);
 	});
 
 	test('update info fighting', () => {
@@ -125,19 +120,17 @@ describe('logCamp', () => {
 				tents: ['H', 'C', 'S'],
 			})
 		);
-		expect(store.getState()).toEqual({
-			camps: [
-				{
-					world: 1,
-					location: 'DWF',
-					pker: false,
-					endTime: now.add(15, 'minute'),
-					state: 'fighting',
-					tents: ['H', 'C', 'S'],
-					done: false,
-				},
-			],
-		});
+		expect(store.getState().camps).toEqual([
+			{
+				world: 1,
+				location: 'DWF',
+				pker: false,
+				endTime: now.add(15, 'minute'),
+				state: 'fighting',
+				tents: ['H', 'C', 'S'],
+				done: false,
+			},
+		]);
 	});
 
 	test('update info looting', () => {
@@ -156,19 +149,17 @@ describe('logCamp', () => {
 				state: 'looting',
 			})
 		);
-		expect(store.getState()).toEqual({
-			camps: [
-				{
-					world: 1,
-					location: 'DWF',
-					pker: false,
-					endTime: expect.anything(),
-					state: 'looting',
-					tents: ['H', 'C', 'S'],
-					done: false,
-				},
-			],
-		});
+		expect(store.getState().camps).toEqual([
+			{
+				world: 1,
+				location: 'DWF',
+				pker: false,
+				endTime: expect.anything(),
+				state: 'looting',
+				tents: ['H', 'C', 'S'],
+				done: false,
+			},
+		]);
 	});
 
 	test('update info timer', () => {
@@ -185,19 +176,17 @@ describe('logCamp', () => {
 				timer: 4 * 60,
 			})
 		);
-		expect(store.getState()).toEqual({
-			camps: [
-				{
-					world: 1,
-					location: null,
-					pker: false,
-					endTime: now.add(4, 'minute'),
-					state: 'looting',
-					tents: null,
-					done: false,
-				},
-			],
-		});
+		expect(store.getState().camps).toEqual([
+			{
+				world: 1,
+				location: null,
+				pker: false,
+				endTime: now.add(4, 'minute'),
+				state: 'looting',
+				tents: null,
+				done: false,
+			},
+		]);
 	});
 
 	test('update info pker', () => {
@@ -214,19 +203,17 @@ describe('logCamp', () => {
 				pker: true,
 			})
 		);
-		expect(store.getState()).toEqual({
-			camps: [
-				{
-					world: 1,
-					location: null,
-					pker: true,
-					endTime: expect.anything(),
-					state: 'looting',
-					tents: null,
-					done: false,
-				},
-			],
-		});
+		expect(store.getState().camps).toEqual([
+			{
+				world: 1,
+				location: null,
+				pker: true,
+				endTime: expect.anything(),
+				state: 'looting',
+				tents: null,
+				done: false,
+			},
+		]);
 	});
 
 	test('update camp with tent must change state to fighting', () => {
@@ -243,19 +230,17 @@ describe('logCamp', () => {
 				tents: ['H', 'C', 'S'],
 			})
 		);
-		expect(store.getState()).toEqual({
-			camps: [
-				{
-					world: 1,
-					location: 'DWF',
-					pker: false,
-					endTime: now.add(15, 'minute'),
-					state: 'fighting',
-					tents: ['H', 'C', 'S'],
-					done: false,
-				},
-			],
-		});
+		expect(store.getState().camps).toEqual([
+			{
+				world: 1,
+				location: 'DWF',
+				pker: false,
+				endTime: now.add(15, 'minute'),
+				state: 'fighting',
+				tents: ['H', 'C', 'S'],
+				done: false,
+			},
+		]);
 	});
 
 	test('update camp with partial tent must not lose tent state', () => {
@@ -273,19 +258,17 @@ describe('logCamp', () => {
 				tents: ['H'],
 			})
 		);
-		expect(store.getState()).toEqual({
-			camps: [
-				{
-					world: 1,
-					location: 'DWF',
-					pker: false,
-					endTime: expect.anything(),
-					state: 'fighting',
-					tents: ['H', 'C', 'S'],
-					done: false,
-				},
-			],
-		});
+		expect(store.getState().camps).toEqual([
+			{
+				world: 1,
+				location: 'DWF',
+				pker: false,
+				endTime: expect.anything(),
+				state: 'fighting',
+				tents: ['H', 'C', 'S'],
+				done: false,
+			},
+		]);
 	});
 
 	test('update camp with tent while looting must not revert state', () => {
@@ -303,19 +286,17 @@ describe('logCamp', () => {
 				tents: ['H', 'C', 'S'],
 			})
 		);
-		expect(store.getState()).toEqual({
-			camps: [
-				{
-					world: 1,
-					location: 'DWF',
-					pker: false,
-					endTime: now.add(10, 'minute'),
-					state: 'looting',
-					tents: ['H', 'C', 'S'],
-					done: false,
-				},
-			],
-		});
+		expect(store.getState().camps).toEqual([
+			{
+				world: 1,
+				location: 'DWF',
+				pker: false,
+				endTime: now.add(10, 'minute'),
+				state: 'looting',
+				tents: ['H', 'C', 'S'],
+				done: false,
+			},
+		]);
 	});
 
 	test('update camp with broken set timer to 5 min', () => {
@@ -332,19 +313,17 @@ describe('logCamp', () => {
 				state: 'broken',
 			})
 		);
-		expect(store.getState()).toEqual({
-			camps: [
-				{
-					world: 1,
-					location: 'DWF',
-					pker: false,
-					endTime: now.add(5, 'minute'),
-					state: 'fighting',
-					tents: null,
-					done: false,
-				},
-			],
-		});
+		expect(store.getState().camps).toEqual([
+			{
+				world: 1,
+				location: 'DWF',
+				pker: false,
+				endTime: now.add(5, 'minute'),
+				state: 'fighting',
+				tents: null,
+				done: false,
+			},
+		]);
 	});
 
 	test.each(['dead', 'empty'])('remove %s camp', (state) => {
@@ -379,7 +358,36 @@ describe('logCamp', () => {
 					done: false,
 				},
 			],
+			emptiedWorlds: new Set([1]),
 		});
+	});
+
+	test('add info on dead camp doesn\'t do anything', () => {
+		let store = createStore();
+		store.dispatch(
+			logCamp({
+				world: 1,
+			})
+		);
+		expect(store.getState().camps).toHaveLength(1);
+
+		store.dispatch(
+			logCamp({
+				world: 1,
+				state: 'dead',
+			})
+		);
+		let state = store.getState();
+		expect(state.camps).toHaveLength(0);
+		expect(state.emptiedWorlds.size).toEqual(1);
+
+		store.dispatch(
+			logCamp({
+				world: 1,
+				pker: true,
+			})
+		);
+		expect(store.getState().camps).toHaveLength(0);
 	});
 });
 
@@ -389,6 +397,7 @@ describe('logCampLine', () => {
 		store.dispatch(logCampLine('invalid'));
 		expect(store.getState()).toEqual({
 			camps: [],
+			emptiedWorlds: new Set(),
 		});
 	});
 });
@@ -404,6 +413,7 @@ test('reset', () => {
 	store.dispatch(reset());
 	expect(store.getState()).toEqual({
 		camps: [],
+		emptiedWorlds: new Set(),
 	});
 });
 
@@ -423,4 +433,5 @@ test('tick', () => {
 	);
 	store.dispatch(tick());
 	expect(store.getState().camps).toHaveLength(0);
+	expect(store.getState().emptiedWorlds).toEqual(new Set([1]));
 })

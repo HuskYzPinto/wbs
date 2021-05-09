@@ -15,6 +15,7 @@ export interface Camp {
 
 export interface Store {
 	camps: Camp[];
+	emptiedWorlds: Set<number>;
 }
 
 export type Action = { type: Symbol; [key: string]: any };

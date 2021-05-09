@@ -1,10 +1,12 @@
 import { createStore } from 'redux';
 import { findIndex } from 'lodash';
-import produce  from 'immer';
+import produce, {enableMapSet} from 'immer';
 import dayjs from 'dayjs';
 import {LOG_CAMP, RESET, DONE, TICK, tick} from './actions';
 import { Action, Camp, Store } from './type';
 import { WarbandInfo } from '../libs/parser';
+
+enableMapSet();
 
 function createCamp(state: Store, info: Partial<WarbandInfo>) {
 	return produce(state, (draft) => {
@@ -26,6 +28,7 @@ function createCamp(state: Store, info: Partial<WarbandInfo>) {
 			campInfo.state = 'looting';
 		} else if (info.state === 'dead' || info.state === 'empty') {
 			// i don't want to add any more, why tell me now
+			draft.emptiedWorlds.add(info.world!);
 			return;
 		}
 
@@ -42,6 +45,7 @@ function _reducer(state: Store | undefined, action: Action): Store {
 	if (!state || action.type === RESET) {
 		return {
 			camps: [],
+			emptiedWorlds: new Set<number>(),
 		};
 	}
 
@@ -53,11 +57,16 @@ function _reducer(state: Store | undefined, action: Action): Store {
 				(item) => item.world === info.world
 			);
 			if (campIndex === -1) {
+				if (state.emptiedWorlds.has(info.world!)) {
+					// don't revive dead world
+					return state;
+				}
 				return createCamp(state, info);
 			}
 			return produce(state, (draft) => {
 				if (info.state === 'dead' || info.state === 'empty') {
 					draft.camps.splice(campIndex, 1);
+					draft.emptiedWorlds.add(info.world!);
 					return;
 				}
 
@@ -116,6 +125,7 @@ function _reducer(state: Store | undefined, action: Action): Store {
 				for(let camp of draft.camps) {
 					if (camp.endTime.isBefore(now)) {
 						removingWorlds.push(camp.world);
+						draft.emptiedWorlds.add(camp.world);
 					}
 				}
 				if (removingWorlds.length === 0) {
