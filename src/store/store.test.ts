@@ -1,6 +1,6 @@
 import MockDate from 'mockdate';
 import createStore from './store';
-import { logCamp, logCampLine, reset } from './actions';
+import {logCamp, logCampLine, reset, tick} from './actions';
 import { ReportState } from '../libs/parser';
 import dayjs from 'dayjs';
 
@@ -406,3 +406,21 @@ test('reset', () => {
 		camps: [],
 	});
 });
+
+test('tick', () => {
+	let store = createStore();
+	store.dispatch(
+		logCamp({
+			world: 1,
+			location: 'DWF',
+		})
+	);
+	store.dispatch(
+		logCamp({
+			world: 1,
+			timer: -1000000,
+		})
+	);
+	store.dispatch(tick());
+	expect(store.getState().camps).toHaveLength(0);
+})

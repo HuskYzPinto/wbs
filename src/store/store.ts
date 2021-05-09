@@ -2,9 +2,41 @@ import { createStore } from 'redux';
 import { findIndex } from 'lodash';
 import produce  from 'immer';
 import dayjs from 'dayjs';
-import { LOG_CAMP, RESET, DONE } from './actions';
+import {LOG_CAMP, RESET, DONE, TICK, tick} from './actions';
 import { Action, Camp, Store } from './type';
 import { WarbandInfo } from '../libs/parser';
+
+function createCamp(state: Store, info: Partial<WarbandInfo>) {
+	return produce(state, (draft) => {
+		// camp not found, add it
+		let campInfo: Camp = {
+			world: info.world!,
+			endTime: dayjs().add(10, 'minute'),
+			location: info.location || null,
+			pker: info.pker || false,
+			state: 'new',
+			tents: info.tents || null,
+			done: false,
+		};
+
+		if (info.state === 'broken' || info.state === 'fighting') {
+			campInfo.state = 'fighting';
+			campInfo.endTime = dayjs().add(5, 'minute');
+		} else if (info.state === 'looting') {
+			campInfo.state = 'looting';
+		} else if (info.state === 'dead' || info.state === 'empty') {
+			// i don't want to add any more, why tell me now
+			return;
+		}
+
+		if (info.tents && !info.state) {
+			campInfo.state = 'fighting';
+		}
+
+		draft.camps.push(campInfo);
+		draft.camps.sort((a, b) => a.world - b.world);
+	});
+}
 
 function _reducer(state: Store | undefined, action: Action): Store {
 	if (!state || action.type === RESET) {
@@ -16,41 +48,14 @@ function _reducer(state: Store | undefined, action: Action): Store {
 	switch (action.type) {
 		case LOG_CAMP:
 			let info: Partial<WarbandInfo> = action.info;
+			let campIndex = findIndex(
+				state.camps,
+				(item) => item.world === info.world
+			);
+			if (campIndex === -1) {
+				return createCamp(state, info);
+			}
 			return produce(state, (draft) => {
-				let campIndex = findIndex(
-					draft.camps,
-					(item) => item.world === info.world
-				);
-				if (campIndex === -1) {
-					// camp not found, add it
-					let campInfo: Camp = {
-						world: info.world!,
-						endTime: dayjs().add(10, 'minute'),
-						location: info.location || null,
-						pker: info.pker || false,
-						state: 'new',
-						tents: info.tents || null,
-						done: false,
-					};
-
-					if (info.state === 'broken' || info.state === 'fighting') {
-						campInfo.state = 'fighting';
-					} else if (info.state === 'looting') {
-						campInfo.state = 'looting';
-					} else if (info.state === 'dead' || info.state === 'empty') {
-						// i don't want to add any more, why tell me now
-						return;
-					}
-
-					if (info.tents && !info.state) {
-						campInfo.state = 'fighting';
-					}
-
-					draft.camps.push(campInfo);
-					draft.camps.sort((a, b) => a.world - b.world);
-					return;
-				}
-
 				if (info.state === 'dead' || info.state === 'empty') {
 					draft.camps.splice(campIndex, 1);
 					return;
@@ -83,7 +88,7 @@ function _reducer(state: Store | undefined, action: Action): Store {
 					camp.state = 'looting';
 				}
 
-				if (info.timer && info.timer > 0) {
+				if (info.timer) {
 					camp.endTime = dayjs().add(info.timer, 's');
 				}
 
@@ -95,7 +100,6 @@ function _reducer(state: Store | undefined, action: Action): Store {
 					camp.endTime = camp.endTime.add(5, 'minute');
 				}
 			});
-
 		case DONE:
 			return produce(state, (draft) => {
 				let campIndex = findIndex(
@@ -105,7 +109,21 @@ function _reducer(state: Store | undefined, action: Action): Store {
 				let camp = draft.camps[campIndex];
 				camp.done = action.done;
 			});
+		case TICK:
+			return produce(state, (draft) => {
+				let now = dayjs();
+				let removingWorlds: number[] = [];
+				for(let camp of draft.camps) {
+					if (camp.endTime.isBefore(now)) {
+						removingWorlds.push(camp.world);
+					}
+				}
+				if (removingWorlds.length === 0) {
+					return;
+				}
 
+				draft.camps = draft.camps.filter((camp) => !removingWorlds.includes(camp.world));
+			});
 		default:
 			return state;
 	}
@@ -120,5 +138,8 @@ export default function storeFactory(initialState?: Store) {
 					(window as any).__REDUX_DEVTOOLS_EXTENSION__()
 			: undefined
 	);
+	setInterval(() => {
+		out.dispatch(tick());
+	}, 5000);
 	return out;
 }

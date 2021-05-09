@@ -8,6 +8,10 @@ export interface Props {
 export default function Timer(props: Props) {
     let compute = () => {
         let duration = props.time.diff(dayjs(), 's', false);
+        if (duration < 0) {
+            return '0:00';
+        }
+
         let min = Math.floor(duration / 60);
         let sec = (duration - (min * 60)).toString();
 

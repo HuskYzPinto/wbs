@@ -4,6 +4,7 @@ import { Action } from './type';
 export const LOG_CAMP = Symbol('LOG_CAMP');
 export const RESET = Symbol('RESET');
 export const DONE = Symbol('DONE');
+export const TICK = Symbol('TICK');
 
 export function logCamp(info: Partial<WarbandInfo>): Action {
 	return {
@@ -28,5 +29,11 @@ export function done(world: number, value = true): Action {
 export function reset(): Action {
 	return {
 		type: RESET,
+	};
+}
+
+export function tick(): Action {
+	return {
+		type: TICK,
 	};
 }
