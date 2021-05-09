@@ -14,6 +14,7 @@ test.each([
 	['w1 dwf', { world: 1, location: 'DWF' }],
 	['1 beamed hsm', { world: 1, tents: ['H', 'S', 'M'], state: 'fighting' }],
 	['1 hsm beamed', { world: 1, tents: ['H', 'S', 'M'], state: 'fighting' }],
+	['1 hsm, just beamed', { world: 1, tents: ['H', 'S', 'M'], state: 'fighting' }],
 	['1 broken hsf', { world: 1, tents: ['H', 'S', 'F'], state: 'broken' }],
 	['1 broke hsm', { world: 1, tents: ['H', 'S', 'M'], state: 'broken' }],
 	['1 ruined', { world: 1, state: 'broken' }],
@@ -40,8 +41,16 @@ test.each([
 	['1 clan', { world: 1, pker: true }],
 	['1 invalid message', null],
 	['w60 invalid message', null],
+	['w60 will empty soon', null],
+	['w60 gonna empty soon', null],
+	['w60 prob empty soon', null],
+	['w60 empty soon', null],
+	['name pking elm 89', { world: 89, pker: true, location: 'ELM' }],
 	['w60 fighting pker', { world: 60, pker: true }],
 	['W69 smh pker', { world: 69, tents: ['S', 'M', 'H'], pker: true}],
+	[' 82 rdi', {world: 82, location: 'RDI'}],
+	['82 pk', {world: 82, pker: true}],
+	['82    pk', {world: 82, pker: true}],
 ] as Array<[string, Partial<WarbandInfo>]>)('%s', (chatLine, expected) => {
 	expect(parseChatLine(chatLine)).toEqual(expected);
 });

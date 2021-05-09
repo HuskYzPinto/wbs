@@ -1,16 +1,18 @@
-start = w:World ' '? c:Calls { return {world: w, ...c} } 
-	/ c:Calls w:World { return {world: w, ...c} }
+start = _ w:World _ c:Calls _ { return {world: w, ...c} }
+	/ _ c:Calls _ w:World _ { return {world: w, ...c} }
 	
 World = 'w'i i:Integer { return i }
 	/ i:Integer
 
-Calls = c:Call next:(' ' Calls)? {
+Calls = c:Call next:([,. ]+ Calls)? {
 	next = next ? next[1] : []
 	return {...c, ...next}
 }
 
 Call = (
 	l:Location { return {location: l} }
+	/ Future _ .+ { return {} }
+	/ s:State _ Future { return {} }
 	/ s:State { return {state: s} }
 	/ t:Time { return {timer: t} }
 	/ Pker { return {pker: true} }
@@ -46,6 +48,8 @@ State = 'broken'i
 	/ 'empty'i
 	/ 'emptied'i { return 'empty' }
 
+Future = 'soon'i / 'prob'i / 'probs'i / 'will'i / 'gonna'i
+
 Tent = ('H'i / 'C'i / 'M'i / 'S'i / 'F'i) { return text().toUpperCase() }
 FullTent = (
 	'herblore'i
@@ -60,7 +64,7 @@ FullTent = (
 	/ 'smith'i
 ) { return text()[0].toUpperCase() }
 
-Pker = 'pker'i / 'clanned'i / 'clan'i
+Pker = 'pking'i / 'pker'i / 'clanned'i / 'clan'i / 'pk'i
 
 Time = TimeMinute / TimeFull
 TimeMinute = min:Integer _ ('min'i/'m'i) { return min * 60 }
@@ -70,7 +74,7 @@ Garbage "garbage" = [^ ]+
 
 Integer "integer" = [0-9]+ { return parseInt(text(), 10); }
 
-SpaceOrEnd = & ' '
+SpaceOrEnd = & [ ,]+
 	/ ! .
 
 __ "tent-sep" = [ /]*
