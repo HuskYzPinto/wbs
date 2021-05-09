@@ -37,6 +37,7 @@ describe('logCamp', () => {
 					endTime: now.add(10, 'minute'),
 					state: 'new',
 					tents: null,
+					done: false,
 				},
 			],
 		});
@@ -65,6 +66,7 @@ describe('logCamp', () => {
 					endTime: expect.anything(),
 					state: 'new',
 					tents: null,
+					done: false,
 				},
 				{
 					world: 2,
@@ -73,6 +75,7 @@ describe('logCamp', () => {
 					endTime: expect.anything(),
 					state: 'new',
 					tents: null,
+					done: false,
 				},
 			],
 		});
@@ -102,6 +105,7 @@ describe('logCamp', () => {
 					endTime: now.add(10, 'minute'),
 					state: 'new',
 					tents: null,
+					done: false,
 				},
 			],
 		});
@@ -130,6 +134,7 @@ describe('logCamp', () => {
 					endTime: now.add(15, 'minute'),
 					state: 'fighting',
 					tents: ['H', 'C', 'S'],
+					done: false,
 				},
 			],
 		});
@@ -160,6 +165,7 @@ describe('logCamp', () => {
 					endTime: expect.anything(),
 					state: 'looting',
 					tents: ['H', 'C', 'S'],
+					done: false,
 				},
 			],
 		});
@@ -188,6 +194,7 @@ describe('logCamp', () => {
 					endTime: now.add(4, 'minute'),
 					state: 'looting',
 					tents: null,
+					done: false,
 				},
 			],
 		});
@@ -216,6 +223,7 @@ describe('logCamp', () => {
 					endTime: expect.anything(),
 					state: 'looting',
 					tents: null,
+					done: false,
 				},
 			],
 		});
@@ -244,6 +252,7 @@ describe('logCamp', () => {
 					endTime: now.add(15, 'minute'),
 					state: 'fighting',
 					tents: ['H', 'C', 'S'],
+					done: false,
 				},
 			],
 		});
@@ -273,6 +282,7 @@ describe('logCamp', () => {
 					endTime: now.add(10, 'minute'),
 					state: 'looting',
 					tents: ['H', 'C', 'S'],
+					done: false,
 				},
 			],
 		});
@@ -301,6 +311,7 @@ describe('logCamp', () => {
 					endTime: now.add(5, 'minute'),
 					state: 'fighting',
 					tents: null,
+					done: false,
 				},
 			],
 		});
@@ -335,6 +346,7 @@ describe('logCamp', () => {
 					endTime: expect.anything(),
 					state: 'new',
 					tents: null,
+					done: false,
 				},
 			],
 		});

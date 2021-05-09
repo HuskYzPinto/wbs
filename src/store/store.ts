@@ -79,6 +79,10 @@ function _reducer(state: Store | undefined, action: Action): Store {
 					camp.state = 'looting';
 				}
 
+				if (info.timer && info.timer > 0) {
+					camp.endTime = dayjs().add(info.timer, 's');
+				}
+
 				if (
 					camp.state === 'fighting' &&
 					state.camps[campIndex].state !== 'fighting' &&
