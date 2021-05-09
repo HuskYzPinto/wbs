@@ -4,7 +4,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {done} from '../store/actions';
 import {Location, Tent} from '../libs/parser';
 import {Camp} from '../store/type';
-import {css} from '@emotion/react'
+import {css, jsx} from '@emotion/react'
 import Timer from './Timer';
 
 const toolbarStyle = css`
