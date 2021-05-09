@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 import { findIndex } from 'lodash';
-import produce, { current } from 'immer';
+import produce  from 'immer';
 import dayjs from 'dayjs';
 import { LOG_CAMP, RESET, DONE } from './actions';
 import { Action, Camp, Store } from './type';
@@ -58,7 +58,11 @@ function _reducer(state: Store | undefined, action: Action): Store {
 
 				let camp = draft.camps[campIndex];
 				camp.location = info.location || camp.location;
-				camp.tents = info.tents || camp.tents;
+				if (camp.tents && info.tents) {
+					camp.tents = camp.tents.concat(info.tents.filter(tent => !camp.tents!.includes(tent))).slice(0, 3) as typeof camp.tents;
+				} else {
+					camp.tents = info.tents || camp.tents;
+				}
 
 				if (camp.tents && camp.state === 'new') {
 					camp.state = 'fighting';
@@ -107,7 +111,7 @@ function _reducer(state: Store | undefined, action: Action): Store {
 	}
 }
 
-export default function (initialState?: Store) {
+export default function storeFactory(initialState?: Store) {
 	let out = createStore(
 		_reducer,
 		initialState,

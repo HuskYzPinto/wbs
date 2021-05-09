@@ -3,8 +3,6 @@ import ChatboxReader from '@alt1/chatbox';
 import {logCampLine} from './store/actions';
 import type createStore from "./store/store";
 
-const CHAT_REGEX = /\[\]/;
-
 export default function readChatbox(store: ReturnType<typeof createStore>): void {
     if (!hasAlt1) {
         console.log('Alt1 not detected');
@@ -27,7 +25,7 @@ export default function readChatbox(store: ReturnType<typeof createStore>): void
             return;
         }
 
-        outer: for (let line of lines) {
+        for (let line of lines) {
             if(!line.fragments.find((frag) => frag.text === 'FC')){
                 return;
             }

@@ -1,4 +1,4 @@
-import { Tent, Location } from '../libs/parser';
+import type { Location, WarbandInfo } from '../libs/parser';
 import dayjs from 'dayjs';
 
 export type CampState = 'new' | 'fighting' | 'looting';
@@ -6,7 +6,7 @@ export type CampState = 'new' | 'fighting' | 'looting';
 export interface Camp {
 	world: number;
 	location: Location | null;
-	tents: [Tent, Tent, Tent] | null;
+	tents: WarbandInfo["tents"];
 	pker: boolean;
 	endTime: dayjs.Dayjs;
 	state: CampState;

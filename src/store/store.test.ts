@@ -258,6 +258,36 @@ describe('logCamp', () => {
 		});
 	});
 
+	test('update camp with partial tent must not lose tent state', () => {
+		let store = createStore();
+		store.dispatch(
+			logCamp({
+				world: 1,
+				location: 'DWF',
+				tents: ['H', 'C', 'S'],
+			})
+		);
+		store.dispatch(
+			logCamp({
+				world: 1,
+				tents: ['H'],
+			})
+		);
+		expect(store.getState()).toEqual({
+			camps: [
+				{
+					world: 1,
+					location: 'DWF',
+					pker: false,
+					endTime: expect.anything(),
+					state: 'fighting',
+					tents: ['H', 'C', 'S'],
+					done: false,
+				},
+			],
+		});
+	});
+
 	test('update camp with tent while looting must not revert state', () => {
 		let store = createStore();
 		store.dispatch(
