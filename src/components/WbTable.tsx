@@ -1,12 +1,15 @@
 /** @jsx jsx */
-import React from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {done} from '../store/actions';
-import {Tent} from '../libs/parser';
+import {Location, Tent} from '../libs/parser';
 import {Camp} from '../store/type';
-import {css, jsx} from '@emotion/react'
+import {css} from '@emotion/react'
 import Timer from './Timer';
 
+const toolbarStyle = css`
+    padding: 5px 10px;
+`
 const tableStyle = css`
 	width: 100%;
 	.nisbutton2 {
@@ -51,13 +54,18 @@ const sortKeyer: { readonly [key in SortKey]?: SortKeyer } = {
 
 const WbTable: React.FC<Props> = (props: any) => {
     const state = useSelector((state) => state.camps);
+    const [locationFilter, setLocationFilter] = useState<Location|''>('');
     const dispatch = useDispatch();
 
     const camps: Camp[] = state;
-    const [sortConfig, setSortConfig] = React.useState<{
+    const [sortConfig, setSortConfig] = useState<{
         key: SortKey;
         direction: SortDirection;
     } | null>(null);
+
+    const onLocationChange: React.ChangeEventHandler<HTMLSelectElement> = (e) => {
+        setLocationFilter(e.target.value as typeof locationFilter);
+    }
 
     const requestSort = (key: SortKey) => {
         let direction = SortDirection.Ascending;
@@ -73,6 +81,10 @@ const WbTable: React.FC<Props> = (props: any) => {
     };
 
     let sortedCamps: Camp[] = [...camps];
+
+    if (locationFilter) {
+        sortedCamps = sortedCamps.filter((camp) => camp.location === locationFilter);
+    }
 
     if (sortConfig !== null) {
         sortedCamps.sort((a: Camp, b: Camp) => {
@@ -90,9 +102,9 @@ const WbTable: React.FC<Props> = (props: any) => {
 
     const boolText = (info: boolean | null) => {
         if (info) {
-			return <span css={css`color: #0f0;`}>✅</span>;
+            return <span css={css`color: #0f0;`}>✅</span>;
         } else {
-			return <span css={css`color: maroon;`}>❌</span>;
+            return <span css={css`color: maroon;`}>❌</span>;
         }
     };
 
@@ -116,10 +128,10 @@ const WbTable: React.FC<Props> = (props: any) => {
             <td css={tentStyle}>{boolText(camp.pker)}</td>
             <td css={tentStyle}>{boolText(camp.done)}</td>
             <td css={tentStyle}>{camp.state}</td>
-			<td><Timer time={camp.endTime} /></td>
+            <td><Timer time={camp.endTime}/></td>
             <td css={doneColStyle}>
                 <button
-					className="nisbutton2"
+                    className="nisbutton2"
                     onClick={() => {
                         dispatch(done(camp.world, !camp.done));
                     }}>
@@ -129,69 +141,79 @@ const WbTable: React.FC<Props> = (props: any) => {
         </tr>
     ));
     return (
-        <table css={tableStyle} className="nistable">
-            <thead>
-            <tr>
-                <th>
-                    <button className="nisbutton2" type="button" onClick={() => requestSort('world')}>
-                        World
-                    </button>
-                </th>
-                <th>
-                    <button className="nisbutton2" type="button" onClick={() => requestSort('location')}>
-                        Location
-                    </button>
-                </th>
-                <th css={tentStyle}>
-                    <button className="nisbutton2" type="button" onClick={() => requestSort('C')}>
-                        C
-                    </button>
-                </th>
-                <th css={tentStyle}>
-                    <button className="nisbutton2" type="button" onClick={() => requestSort('S')}>
-                        S
-                    </button>
-                </th>
-                <th css={tentStyle}>
-                    <button className="nisbutton2" type="button" onClick={() => requestSort('M')}>
-                        M
-                    </button>
-                </th>
-                <th css={tentStyle}>
-                    <button className="nisbutton2" type="button" onClick={() => requestSort('H')}>
-                        H
-                    </button>
-                </th>
-                <th css={tentStyle}>
-                    <button className="nisbutton2" type="button" onClick={() => requestSort('F')}>
-                        F
-                    </button>
-                </th>
-                <th css={tentStyle}>
-                    <button className="nisbutton2" type="button" onClick={() => requestSort('pker')}>
-                        Pker
-                    </button>
-                </th>
-                <th css={tentStyle}>
-                    <button className="nisbutton2" type="button" onClick={() => requestSort('done')}>
-                        Done
-                    </button>
-                </th>
-				<th>
-					<button className="nisbutton2" type="button" onClick={() => requestSort('state')}>
-						Status
-					</button>
-				</th>
-				<th>
-                    <button className="nisbutton2" type="button" onClick={() => requestSort('endTime')}>
-                        Time
-                    </button>
-                </th>
-				<th css={doneColStyle}></th>
-            </tr>
-            </thead>
-            <tbody>{output}</tbody>
-        </table>
+        <div>
+            <div css={toolbarStyle}>
+                Location: <select value={locationFilter} onChange={onLocationChange} className="nisdropdown">
+                    <option value="">Any</option>
+                    <option>DWF</option>
+                    <option>ELM</option>
+                    <option>RDI</option>
+                </select>
+            </div>
+            <table css={tableStyle} className="nistable">
+                <thead>
+                <tr>
+                    <th>
+                        <button className="nisbutton2" type="button" onClick={() => requestSort('world')}>
+                            World
+                        </button>
+                    </th>
+                    <th>
+                        <button className="nisbutton2" type="button" onClick={() => requestSort('location')}>
+                            Location
+                        </button>
+                    </th>
+                    <th css={tentStyle}>
+                        <button className="nisbutton2" type="button" onClick={() => requestSort('C')}>
+                            C
+                        </button>
+                    </th>
+                    <th css={tentStyle}>
+                        <button className="nisbutton2" type="button" onClick={() => requestSort('S')}>
+                            S
+                        </button>
+                    </th>
+                    <th css={tentStyle}>
+                        <button className="nisbutton2" type="button" onClick={() => requestSort('M')}>
+                            M
+                        </button>
+                    </th>
+                    <th css={tentStyle}>
+                        <button className="nisbutton2" type="button" onClick={() => requestSort('H')}>
+                            H
+                        </button>
+                    </th>
+                    <th css={tentStyle}>
+                        <button className="nisbutton2" type="button" onClick={() => requestSort('F')}>
+                            F
+                        </button>
+                    </th>
+                    <th css={tentStyle}>
+                        <button className="nisbutton2" type="button" onClick={() => requestSort('pker')}>
+                            Pker
+                        </button>
+                    </th>
+                    <th css={tentStyle}>
+                        <button className="nisbutton2" type="button" onClick={() => requestSort('done')}>
+                            Done
+                        </button>
+                    </th>
+                    <th>
+                        <button className="nisbutton2" type="button" onClick={() => requestSort('state')}>
+                            Status
+                        </button>
+                    </th>
+                    <th>
+                        <button className="nisbutton2" type="button" onClick={() => requestSort('endTime')}>
+                            Time
+                        </button>
+                    </th>
+                    <th css={doneColStyle}></th>
+                </tr>
+                </thead>
+                <tbody>{output}</tbody>
+            </table>
+        </div>
     );
 };
 
